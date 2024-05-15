@@ -14,7 +14,7 @@ mainEl[0].classList.toggle('flex-ctr');
 
 //Part 2
 let topMenuEl = document.getElementById(`top-menu`);
-console.log(topMenuEl);
+// console.log(topMenuEl);
 topMenuEl.style.height = "100%"
 topMenuEl.style.backgroundColor = "var(--top-menu-bg)";
 topMenuEl.classList.toggle("flex-around");
@@ -22,8 +22,14 @@ topMenuEl.classList.toggle("flex-around");
 //Part 3
 for (let i = 0; i < menuLinks.length; i++){
     const link = document.createElement(`a`);
-    let attributeValue = menuLinks[i].text;
+    let attributeValue = menuLinks[i].href;
     link.setAttribute(`href`,attributeValue);
+    link.textContent = menuLinks[i].text;
     topMenuEl.appendChild(link);
 }
-
+// menuLinks.forEach((link) => {
+//     let newLink = document.createElement(`a`);
+//     newLink.setAttribute(`href`, link.href);
+//     newLink.textContent = link.text;
+//     topMenuEl.appendChild(newLink);
+// })
