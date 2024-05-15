@@ -20,3 +20,10 @@ topMenuEl.style.backgroundColor = "var(--top-menu-bg)";
 topMenuEl.classList.toggle("flex-around");
 
 //Part 3
+for (let i = 0; i < menuLinks.length; i++){
+    const link = document.createElement(`a`);
+    let attributeValue = menuLinks[i].text;
+    link.setAttribute(`href`,attributeValue);
+    topMenuEl.appendChild(link);
+}
+
