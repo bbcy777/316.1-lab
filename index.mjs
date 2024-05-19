@@ -49,13 +49,34 @@ subMenuEl.style.position = `absolute`;
 subMenuEl.style.top = `0`;
 
 //part 4 Adding Menu Interaction
-let topMenuLinks = document.querySelectorAll('a');
+let topMenuLinks = topMenuEl.querySelectorAll('a');
 console.log(topMenuLinks);
 
-topMenuEl.addEventListener(`click`, (event)=>{
+topMenuLinks.forEach((item) => {
+  item.addEventListener(`click`,(event) => {
     event.preventDefault();
-    console.log(event);
-    console.log(event.target);
-    if(event.target != `a`) return;
-    event.target.classList.toggle(`active`)
+    if(event.target.localName != `a`) return;
+    
+    let lastActive = document.querySelector('a.active');
+    if (lastActive) {
+      lastActive.classList.remove(`active`);
+    }
+    event.target.classList.toggle(`active`);
+  })
 })
+// topMenuEl.addEventListener(`click`, setActive);
+
+// function setActive (event){
+//     event.preventDefault();
+//     console.log(event)
+//     if(event.target.localName != `a`) return;
+//     console.log(event.target.localName);
+//     event.target.classList.toggle(`active`)
+// };
+
+// topMenuEl.addEventListener(`click`, removeActive);
+
+// function removeActive (event){
+//   event.target.classList.remove('active');
+// }
+
