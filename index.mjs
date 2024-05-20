@@ -52,6 +52,8 @@ subMenuEl.style.top = `0`;
 let topMenuLinks = topMenuEl.querySelectorAll('a');
 console.log(topMenuLinks);
 
+let subMenuOpen = false;
+
 topMenuLinks.forEach((item) => {
   item.addEventListener(`click`,(event) => {
     event.preventDefault();
@@ -62,21 +64,69 @@ topMenuLinks.forEach((item) => {
       lastActive.classList.remove(`active`);
     }
     event.target.classList.toggle(`active`);
+
+    //open and close the subMenu bar if clicked item has subLinks
+    const menuText = event.target.textContent.trim().toLowerCase();
+    console.log(menuText);
+    // If the ABOUT link is clicked, an <h1>About</h1> should be displayed
+    if (menuText == `about`){
+      let mainEl = document.querySelector(`main`);
+      mainEl.innerHTML = `<h1>About</h1>`;
+    }
+    
+    const menuItem = menuLinks.find(menu => menu.text.toLowerCase() === menuText);
+    console.log(menuItem);
+    if(menuItem && menuItem.subLinks){
+      //if sublinks exist, buildSubmen
+      buildSubmenu(menuItem.subLinks);
+      console.log(subMenuEl);
+      if(!subMenuOpen){
+        subMenuEl.style.top = `100%`;
+        subMenuOpen = true;
+      }else{
+        subMenuEl.style.top = `0`;
+        subMenuOpen = false;
+      }
+    } else {
+      subMenuEl.style.top = `0`;
+      subMenuOpen = false;
+    }
   })
 })
-// topMenuEl.addEventListener(`click`, setActive);
+console.log(topMenuEl);
 
-// function setActive (event){
-//     event.preventDefault();
-//     console.log(event)
-//     if(event.target.localName != `a`) return;
-//     console.log(event.target.localName);
-//     event.target.classList.toggle(`active`)
-// };
+//part 5 buildSubmenu 
+function buildSubmenu(menu) {
+  subMenuEl.innerHTML = '';
+  menu.forEach((link) =>{
+    const subMenu = document.createElement(`a`);
+    subMenu.setAttribute(`href`,link.href);
+    subMenu.textContent = link.text;
+    subMenuEl.appendChild(subMenu);
+  });}
 
-// topMenuEl.addEventListener(`click`, removeActive);
+console.log(subMenuEl);
+//   Attach a delegated 'click' event listener to subMenuEl.
 
-// function removeActive (event){
-//   event.target.classList.remove('active');
-// }
+subMenuEl.addEventListener(`click`, (event)=>{
+  // The first line of code of the event listener function should call the event object's preventDefault() method.
+  event.preventDefault();
+
+  // The second line of code within the function should immediately return if the element clicked was not an <a> element.
+  if (event.target.localName !=`a`) return;
+
+  // Log the content of the <a> to verify the handler is working.
+  console.log(event.target);
+  
+  // Next, the event listener should set the CSS top property of subMenuEl to 0.
+  subMenuEl.style.top = `0`;
+
+  // Remove the active class from each <a> element in topMenuLinks.
+  topMenuLinks.forEach((el) =>{
+    el.classList.remove(`active`)});
+
+  // Update the contents of mainEl, within an <h1>, to the contents of the <a> element clicked within subMenuEl.
+  const mainEl = document.querySelector(`main`);
+  mainEl.innerHTML = `<h1>${event.target.textContent}</h1>`;
+})
 
