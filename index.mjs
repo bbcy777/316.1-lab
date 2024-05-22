@@ -48,52 +48,92 @@ subMenuEl.classList.toggle(`flex-around`);
 subMenuEl.style.position = `absolute`;
 subMenuEl.style.top = `0`;
 
-//part 4 Adding Menu Interaction
+// //part 4 Adding Menu Interaction
+// let topMenuLinks = topMenuEl.querySelectorAll('a');
+// console.log(topMenuLinks);
+
+// let subMenuOpen = false;
+
+// topMenuLinks.forEach((item) => {
+//   item.addEventListener(`click`,(event) => {
+//     event.preventDefault();
+//     if(event.target.localName != `a`) return;
+    
+//     let lastActive = document.querySelector('a.active');
+//     if (lastActive) {
+//       lastActive.classList.remove(`active`);
+//     }
+//     event.target.classList.toggle(`active`);
+
+//     //open and close the subMenu bar if clicked item has subLinks
+//     const menuText = event.target.textContent.trim().toLowerCase();
+//     console.log(menuText);
+//     // If the ABOUT link is clicked, an <h1>About</h1> should be displayed
+//     if (menuText == `about`){
+//       let mainEl = document.querySelector(`main`);
+//       mainEl.innerHTML = `<h1>About</h1>`;
+//     }
+    
+//     const menuItem = menuLinks.find(menu => menu.text.toLowerCase() === menuText);
+//     console.log(menuItem);
+//     if(menuItem && menuItem.subLinks){
+//       //if sublinks exist, buildSubmen
+//       buildSubmenu(menuItem.subLinks);
+//       console.log(subMenuEl);
+//       if(!subMenuOpen){
+//         subMenuEl.style.top = `100%`;
+//         subMenuOpen = true;
+//       }else{
+//         subMenuEl.style.top = `0`;
+//         subMenuOpen = false;
+//       }
+//     } else {
+//       subMenuEl.style.top = `0`;
+//       subMenuOpen = false;
+//     }
+//   })
+// })
+// console.log(topMenuEl);
+
+// In class part 4 solution
 let topMenuLinks = topMenuEl.querySelectorAll('a');
-console.log(topMenuLinks);
+let currentSublink;
+topMenuEl.addEventListener(`click`, handleNavClick);
 
-let subMenuOpen = false;
+function handleNavClick(e) {
+  e.preventDefault();
+  if(e.target.localName != `a`) return;
 
-topMenuLinks.forEach((item) => {
-  item.addEventListener(`click`,(event) => {
-    event.preventDefault();
-    if(event.target.localName != `a`) return;
-    
-    let lastActive = document.querySelector('a.active');
-    if (lastActive) {
-      lastActive.classList.remove(`active`);
+  if(e.target.getAttribute(`class`)){
+    e.target.classList.remove(`active`);
+  } else {
+    for(let link of topMenuLinks){
+      link.classList.remove(`active`)
     }
-    event.target.classList.toggle(`active`);
+    e.target.classList.add(`active`);
+  }
+  
 
-    //open and close the subMenu bar if clicked item has subLinks
-    const menuText = event.target.textContent.trim().toLowerCase();
-    console.log(menuText);
-    // If the ABOUT link is clicked, an <h1>About</h1> should be displayed
-    if (menuText == `about`){
-      let mainEl = document.querySelector(`main`);
-      mainEl.innerHTML = `<h1>About</h1>`;
-    }
-    
-    const menuItem = menuLinks.find(menu => menu.text.toLowerCase() === menuText);
-    console.log(menuItem);
-    if(menuItem && menuItem.subLinks){
-      //if sublinks exist, buildSubmen
-      buildSubmenu(menuItem.subLinks);
-      console.log(subMenuEl);
-      if(!subMenuOpen){
-        subMenuEl.style.top = `100%`;
-        subMenuOpen = true;
-      }else{
-        subMenuEl.style.top = `0`;
-        subMenuOpen = false;
-      }
+  for(let link of menuLinks){
+    if (e.target.textContent == link.text && 
+      e.target.getAttribute('class') && 
+      link.subLinks){
+      currentSublink = link.subLinks;
+      buildSubmenu(currentSublink);
+      subMenuEl.style.top = `100%`;
+      break;
     } else {
+      mainEl[0].innerHTML = `<h1>${(e.target.textContent).toUpperCase()}</h1>`
       subMenuEl.style.top = `0`;
-      subMenuOpen = false;
     }
-  })
-})
-console.log(topMenuEl);
+  }
+}
+
+function handleSubNavClick(e){
+  e.preventDefault();
+  if(e.target.localName != `a`) return;
+
+}
 
 //part 5 buildSubmenu 
 function buildSubmenu(menu) {
@@ -127,6 +167,6 @@ subMenuEl.addEventListener(`click`, (event)=>{
 
   // Update the contents of mainEl, within an <h1>, to the contents of the <a> element clicked within subMenuEl.
   const mainEl = document.querySelector(`main`);
-  mainEl.innerHTML = `<h1>${event.target.textContent}</h1>`;
+  mainEl.innerHTML = `<h1>${(event.target.textContent).toUpperCase()}</h1>`;
 })
 
